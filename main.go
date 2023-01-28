@@ -1,27 +1,48 @@
 package main
 
 import (
-   "github.com/gin-gonic/gin"
-   "github.com/taslimmuhammed/gorm/controllers"
-   "net/http"
+	"fmt"
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+	"github.com/taslimmuhammed/gorm/controllers"
 )
 var (
-	userRepo   = controllers.New()
+	userController  = controllers.NewUserRepo()
+   bookController = controllers.NewBookRepo()
 )
+
 func main() {
    r := setupRouter()
-   r.POST("/users", userRepo.CreateUser)
-   r.GET("/users", userRepo.GetUsers)
-   r.GET("/users/:id", userRepo.GetUser)
-   r.PUT("/users/:id", userRepo.UpdateUser)
-   r.DELETE("/users/:id", userRepo.DeleteUser)
+   userRoutes := r.Group("/user")
 
-   _ = r.Run(":8080")
+   {
+   userRoutes.POST("/", userController.CreateUser)
+   userRoutes.GET("/", userController.GetUsers)
+   userRoutes.GET("/:id", userController.GetUser)
+   userRoutes.PUT("/:id", userController.UpdateUser)
+   userRoutes.DELETE("/:id", userController.DeleteUser)
+   }
+   
+   bookRoutes := r.Group("/book")
+
+   {
+   bookRoutes.POST("/", bookController.CreateBook)
+   bookRoutes.GET("/", bookController.GetBooks)
+   bookRoutes.GET("/:id", bookController.GetBook)
+   bookRoutes.PUT("/:id", bookController.UpdateBook)
+   bookRoutes.DELETE("/:id", bookController.DeleteBook)
+   }
+
+   err := r.Run(":8080")
+   if err != nil{
+      fmt.Println(err)
+   }
    
 }
 
 func setupRouter() *gin.Engine {
-   r := gin.Default()
+   r := gin.New()
 
    r.GET("ping", func(c *gin.Context) {
       c.JSON(http.StatusOK, "pong")
