@@ -7,10 +7,10 @@ import (
 )
 
 type Book struct {
-	gorm.Model
-	ID int
-	Name string
-	Author string
+	gorm.Model 
+	ID int `gorm:"primary_key;auto_increment" json:"id"`
+	Name string `gorm:"type:varchar(30)" json:"firstname" binding:"required" `
+	Author string `gorm:"type:varchar(30)`
 }
 
 func CreateBook(db *gorm.DB, Book *Book) (err error) {
