@@ -32,6 +32,7 @@ func main() {
    bookRoutes.GET("/:id", bookController.GetBook)
    bookRoutes.PUT("/:id", bookController.UpdateBook)
    bookRoutes.DELETE("/:id", bookController.DeleteBook)
+   bookRoutes.GET("/query/:id", bookController.QueryFunctions)
    }
 
    err := r.Run(":8080")

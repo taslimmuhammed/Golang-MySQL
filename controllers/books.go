@@ -91,3 +91,11 @@ func(repository *BookRepo) DeleteBook(c *gin.Context){
 	}
 	c.JSON(http.StatusOK, book)
 } 
+
+func(repository *BookRepo) QueryFunctions(c *gin.Context){
+  id,_ := strconv.Atoi(c.Param("id"))
+  var arr []models.Book
+  fmt.Println("Hello world")
+  _ = models.QueryFunction(repository.Db, &arr, id)
+  c.JSON(http.StatusOK, arr)
+}
